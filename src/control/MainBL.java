@@ -3,7 +3,7 @@ package control;
 import java.util.ArrayList;
 
 import view.Log;
-
+import model.ChowCioffiBingham;
 import model.HughesHartoggs;
 import model.Waterfilling;
 
@@ -23,7 +23,8 @@ public class MainBL {
 		double budget = 40;
 		
 //		ArrayList<Double> result = Waterfilling.process(values, budget);
-		ArrayList<Double> result = HughesHartoggs.process(values, budget);
+//		ArrayList<Double> result = HughesHartoggs.process(values, budget);
+		ArrayList<Double> result = ChowCioffiBingham.process(values, budget);
 		
 //		printResult(values, result);
 	}
