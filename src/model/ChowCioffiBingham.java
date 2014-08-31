@@ -34,14 +34,15 @@ public class ChowCioffiBingham {
 		
 		// The desired number of bits per DMT symbol
 		int bitsTarget = 4;
-		
+
+		double[] b = new double[n];
+		int[] b2 = new int[n];
+		double[] diff = new double[n];
+
 		while (bitsTotal != bitsTarget && iterateCount < maxCount) {
 			bitsTotal = 0;
 			usedCarriers = n;
 			
-			double[] b = new double[n];
-			int[] b2 = new int[n];
-			double[] diff = new double[n];
 			for (int i=0; i<n; i++) {
 				b[i] = Math.log( 1 + snr[i]/(gamma+gammaMargin) )/Math.log(2);
 				b2[i] = (int) Math.floor(b[i]);
@@ -64,11 +65,42 @@ public class ChowCioffiBingham {
 			gammaMargin = gammaMargin + 10 * Math.log10(Math.pow(2, (bitsTotal-bitsTarget)/usedCarriers));
 			
 			iterateCount = iterateCount + 1;
-			Log.p(""+bitsTotal);
 		}
 		
+		// Subtract one bit at a time
+		while (bitsTotal > bitsTarget) {
+			int minDiffIdx = -1;
+			double minDiffValue = Double.MAX_VALUE;
+			for (int i=0; i<n; i++) {
+				if (diff[i] < minDiffValue && b2[i] > 0) {
+					minDiffValue = diff[i];
+					minDiffIdx = i;
+				}
+			}
+			if (minDiffIdx != -1) {
+				b2[minDiffIdx] = b2[minDiffIdx] - 1;
+				diff[minDiffIdx] = b[minDiffIdx] - b2[minDiffIdx];
+				bitsTotal = bitsTotal - 1;
+			}
+		}
 		
-		
+		// Add one bit at a time
+		while (bitsTotal < bitsTarget) {
+			int maxDiffIdx = -1;
+			double maxDiffValue = -Double.MAX_VALUE;
+			for (int i=0; i<n; i++) {
+				if (diff[i] > maxDiffValue) {
+					maxDiffValue = diff[i];
+					maxDiffIdx = i;
+				}
+			}
+			if (maxDiffIdx != -1) {
+				b2[maxDiffIdx] = b2[maxDiffIdx] + 1;
+				diff[maxDiffIdx] = b[maxDiffIdx] - b2[maxDiffIdx];
+				bitsTotal = bitsTotal + 1;
+			}
+		}
+
 		return result;
 	}
 	

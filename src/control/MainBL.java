@@ -22,23 +22,28 @@ public class MainBL {
 		
 		double budget = 40;
 		
-//		ArrayList<Double> result = Waterfilling.process(values, budget);
+		ArrayList<Double> result = Waterfilling.process(values, budget);
+		printResult(values, result);
 //		ArrayList<Double> result = HughesHartoggs.process(values, budget);
-		ArrayList<Double> result = ChowCioffiBingham.process(values, budget);
+		result = ChowCioffiBingham.process(values, budget);
 		
-//		printResult(values, result);
+		printResult(values, result);
 	}
 	
 	private static void printResult(ArrayList<Double> values, ArrayList<Double> result) {
+		String res = "";
 		double b = 0;
-		for (int i=0; i<values.size(); i++) {
+		for (int i=0; i<result.size(); i++) {
 			double v = values.get(i);
 			double r = result.get(i);
 			double t = v + r;
-			Log.p(String.format("%5.2f + %5.2f = %5.2f", v, r, t));
+			res += String.format("%5.2f + %5.2f = %5.2f", v, r, t) + "\n";
 			b += r;
 		}
-		Log.p(String.format("    B = %5.2f", b));
+		if (b > 0) {
+			res += String.format("    B = %5.2f", b);
+			Log.p(res);
+		}
 	}
 
 }
