@@ -22,35 +22,51 @@ public class ChowCioffiBingham {
 		
 		// The SNR gap in the well known gap approximation
 		double gamma = 1;
-		// Set current system performance margin Gamma0 as 0 dB
-		double gamma0 = 0;
-		int iterateCount = 0;
-		int usedCarriers = n;
+		// Set current system performance margin gammaMargin as 0 dB
+		double gammaMargin = 0;
 		
-		double[] b = new double[n];
-		int[] b2 = new int[n];
-		double[] diff = new double[n];
+		int iterateCount = 0;
+		int maxCount = 10;
+		
+		int usedCarriers;
+		
 		int bitsTotal = 0;
 		
-		for (int i=0; i<n; i++) {
-			b[i] = Math.log( 1 + snr[i]/(gamma+gamma0) )/Math.log(2);
-			b2[i] = (int) Math.floor(b[i]);
-			diff[i] = b[i] - b2[i];
-			if (b2[i] == 0) {
-				usedCarriers = usedCarriers-1;
+		// The desired number of bits per DMT symbol
+		int bitsTarget = 4;
+		
+		while (bitsTotal != bitsTarget && iterateCount < maxCount) {
+			bitsTotal = 0;
+			usedCarriers = n;
+			
+			double[] b = new double[n];
+			int[] b2 = new int[n];
+			double[] diff = new double[n];
+			for (int i=0; i<n; i++) {
+				b[i] = Math.log( 1 + snr[i]/(gamma+gammaMargin) )/Math.log(2);
+				b2[i] = (int) Math.floor(b[i]);
+				diff[i] = b[i] - b2[i];
+				if (b2[i] == 0) {
+					usedCarriers = usedCarriers-1;
+				}
 			}
-			bitsTotal = bitsTotal + b2[i];
+			
+			// Calculate bitsTotal, stop and declare bad channel if bitsTotal = 0
+			for (int i=0; i<n; i++) {
+				bitsTotal = bitsTotal + b2[i];
+			}
+			if (bitsTotal == 0) {
+				Log.p("Bad channel..");
+				return result;
+			}
+			
+			// Compute new gammaMargin
+			gammaMargin = gammaMargin + 10 * Math.log10(Math.pow(2, (bitsTotal-bitsTarget)/usedCarriers));
+			
+			iterateCount = iterateCount + 1;
+			Log.p(""+bitsTotal);
 		}
 		
-		if (bitsTotal == 0) {
-			Log.p("Bad channel..");
-			return result;
-		}
-		
-		int bitsBudget = 100;
-		
-		// Compute new Gamma0
-		gamma0 = 0;
 		
 		
 		return result;
