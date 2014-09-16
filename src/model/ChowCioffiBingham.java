@@ -100,6 +100,11 @@ public class ChowCioffiBingham {
 				bitsTotal = bitsTotal + 1;
 			}
 		}
+		
+		for (int i=0; i<n; i++) {
+			double r = b2[i] * totalPower / bitsTotal;
+			result.add(i, r);
+		}
 
 		return result;
 	}

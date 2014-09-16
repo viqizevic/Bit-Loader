@@ -15,12 +15,16 @@ public class MainBL {
 	public static void main(String[] args) {
 		
 		ArrayList<Double> values = new ArrayList<Double>();
-		values.add(7.2);
-		values.add(8.8);
-		values.add(3.1);
-		values.add(45.4);
+		values.add(1/19.94);
+		values.add(1/17.03);
+		values.add(1/17.03);
+		values.add(1/10.0);
+		values.add(1/10.0);
+		values.add(1/2.968);
+		values.add(1/2.968);
+		values.add(1/0.0552);
 		
-		double budget = 40;
+		double budget = 8;
 		
 		ArrayList<Double> result = Waterfilling.process(values, budget);
 		printResult(values, result);
