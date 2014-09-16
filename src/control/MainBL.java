@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 import view.Log;
 import model.ChowCioffiBingham;
-import model.HughesHartoggs;
-import model.Waterfilling;
+import model.WaterFilling;
 
+/**
+ * The Class MainBL.
+ */
 public class MainBL {
 
 	/**
-	 * @param args
+	 * The main method.
+	 *
+	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		
@@ -26,14 +30,22 @@ public class MainBL {
 		
 		double budget = 8;
 		
-		ArrayList<Double> result = Waterfilling.process(values, budget);
+		Log.p("Water filling..");
+		ArrayList<Double> result = WaterFilling.process(values, budget);
 		printResult(values, result);
-//		ArrayList<Double> result = HughesHartoggs.process(values, budget);
+		
+		Log.p("Chow Cioffi Bingham..");
 		result = ChowCioffiBingham.process(values, budget);
 		
 		printResult(values, result);
 	}
 	
+	/**
+	 * Prints the result.
+	 *
+	 * @param values the values
+	 * @param result the result
+	 */
 	private static void printResult(ArrayList<Double> values, ArrayList<Double> result) {
 		String res = "";
 		double b = 0;

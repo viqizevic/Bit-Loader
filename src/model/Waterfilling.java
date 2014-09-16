@@ -3,8 +3,18 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Waterfilling {
+/**
+ * The Class WaterFilling.
+ */
+public class WaterFilling {
 
+	/**
+	 * Process.
+	 *
+	 * @param values the values
+	 * @param total the total
+	 * @return the array list
+	 */
 	public static ArrayList<Double> process(ArrayList<Double> values, double total) {
 		
 		ArrayList<Double> result = new ArrayList<Double>();

@@ -4,8 +4,18 @@ import java.util.ArrayList;
 
 import view.Log;
 
+/**
+ * The Class ChowCioffiBingham.
+ */
 public class ChowCioffiBingham {
 
+	/**
+	 * Process.
+	 *
+	 * @param noiseLevels the noise levels
+	 * @param totalPower the total power
+	 * @return the array list
+	 */
 	public static ArrayList<Double> process(ArrayList<Double> noiseLevels, double totalPower) {
 		
 		ArrayList<Double> result = new ArrayList<Double>();
