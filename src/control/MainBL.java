@@ -32,7 +32,7 @@ public class MainBL {
 		
 		double powerBudget = 8;
 		
-		int targetBitRate = 50;
+		int targetBitRate = 20;
 		
 		Log.p("Waterfilling..");
 		ArrayList<Double> result = WaterFilling.process(noiseLevels, powerBudget);
@@ -61,7 +61,7 @@ public class MainBL {
 			double noise = noiseLevels.get(i);
 			double power = powerLevels.get(i);
 			double total = noise + power;
-			double bit = Math.max( ( Converter.getSNRInDb(power/noise) - 3 ) / 3, 0);
+			double bit = Math.max( ( Converter.getValueInDb(power/noise) - 3 ) / 3, 0);
 			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 			budget += power;
 			rate += bit;

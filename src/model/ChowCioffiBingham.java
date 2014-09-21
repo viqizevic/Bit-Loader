@@ -26,15 +26,15 @@ public class ChowCioffiBingham {
 		
 		// Distribute power equally over all subcarriers and compute SNR values based on this power
 		double[] snr = new double[n];
-		double power = powerBudget/n;
 		for (int i=0; i<n; i++) {
-			snr[i] = power/noiseLevels.get(i);
+			// power := total power / number of subcarriers
+			snr[i] = (powerBudget/n)/noiseLevels.get(i);
 		}
 		
-		// The SNR gap in the well known gap approximation
-		double gamma = 1;
+		// The SNR gap as the well known gap approximation
+		double gamma = Converter.getValue(9.8);
 		// Set current system performance margin gammaMargin as 0 dB
-		double gammaMargin = 0;
+		double gammaMargin = Converter.getValue(0);
 		
 		int iterateCount = 0;
 		int maxCount = 10;
@@ -44,14 +44,13 @@ public class ChowCioffiBingham {
 		int bitsTotal = 0;
 		
 		// The desired number of bits per DMT symbol
-		int bitsTarget = 4;
+		int bitsTarget = totalBitRate;
 
 		double[] b = new double[n];
 		int[] b2 = new int[n];
 		double[] diff = new double[n];
 
-		while (bitsTotal != bitsTarget && iterateCount < maxCount) {
-			bitsTotal = 0;
+		while (bitsTotal < bitsTarget && iterateCount < maxCount) {
 			usedCarriers = n;
 			
 			for (int i=0; i<n; i++) {
@@ -64,6 +63,7 @@ public class ChowCioffiBingham {
 			}
 			
 			// Calculate bitsTotal, stop and declare bad channel if bitsTotal = 0
+			bitsTotal = 0;
 			for (int i=0; i<n; i++) {
 				bitsTotal = bitsTotal + b2[i];
 			}
@@ -73,7 +73,7 @@ public class ChowCioffiBingham {
 			}
 			
 			// Compute new gammaMargin
-			gammaMargin = gammaMargin + 10 * Math.log10(Math.pow(2, (bitsTotal-bitsTarget)/usedCarriers));
+			gammaMargin = gammaMargin + Converter.getValueInDb(Math.pow(2, (bitsTotal-bitsTarget)/usedCarriers));
 			
 			iterateCount = iterateCount + 1;
 		}
@@ -88,11 +88,9 @@ public class ChowCioffiBingham {
 					minDiffIdx = i;
 				}
 			}
-			if (minDiffIdx != -1) {
-				b2[minDiffIdx] = b2[minDiffIdx] - 1;
-				diff[minDiffIdx] = b[minDiffIdx] - b2[minDiffIdx];
-				bitsTotal = bitsTotal - 1;
-			}
+			b2[minDiffIdx] = b2[minDiffIdx] - 1;
+			diff[minDiffIdx] = b[minDiffIdx] - b2[minDiffIdx];
+			bitsTotal = bitsTotal - 1;
 		}
 		
 		// Add one bit at a time
@@ -105,16 +103,14 @@ public class ChowCioffiBingham {
 					maxDiffIdx = i;
 				}
 			}
-			if (maxDiffIdx != -1) {
-				b2[maxDiffIdx] = b2[maxDiffIdx] + 1;
-				diff[maxDiffIdx] = b[maxDiffIdx] - b2[maxDiffIdx];
-				bitsTotal = bitsTotal + 1;
-			}
+			b2[maxDiffIdx] = b2[maxDiffIdx] + 1;
+			diff[maxDiffIdx] = b[maxDiffIdx] - b2[maxDiffIdx];
+			bitsTotal = bitsTotal + 1;
 		}
 		
 		for (int i=0; i<n; i++) {
-			double r = b2[i] * powerBudget / bitsTotal;
-			result.add(i, r);
+			double snrValue = HughesHartoggs.getSNRDependsOnBits(b2[i]);
+			result.add(noiseLevels.get(i) * Converter.getValue(snrValue));
 		}
 
 		return result;

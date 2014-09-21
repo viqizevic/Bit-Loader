@@ -6,23 +6,23 @@ package model;
 public class Converter {
 	
 	/**
-	 * Gets the snr.
+	 * Gets the value.
 	 *
-	 * @param snrInDb the snr in db
-	 * @return the snr
+	 * @param valueInDb the value in db
+	 * @return the value
 	 */
-	public static double getSNR(double snrInDb) {
-		return Math.pow(10, snrInDb/10);
+	public static double getValue(double valueInDb) {
+		return Math.pow(10, valueInDb/10);
 	}
 	
 	/**
-	 * Gets the SNR in db.
+	 * Gets the value in db.
 	 *
-	 * @param snr the snr
-	 * @return the SNR in db
+	 * @param value the value
+	 * @return the value in db
 	 */
-	public static double getSNRInDb(double snr) {
-		return 10 * Math.log10(snr);
+	public static double getValueInDb(double value) {
+		return 10 * Math.log10(value);
 	}
 
 }
