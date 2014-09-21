@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import view.Log;
 import model.ChowCioffiBingham;
+import model.HughesHartoggs;
 import model.WaterFilling;
 
 /**
@@ -28,15 +29,20 @@ public class MainBL {
 		values.add(1/2.968);
 		values.add(1/0.0552);
 		
-		double budget = 8;
+		double powerBudget = 8;
+		
+		int targetBitRate = 50;
 		
 		Log.p("Water filling..");
-		ArrayList<Double> result = WaterFilling.process(values, budget);
+		ArrayList<Double> result = WaterFilling.process(values, powerBudget);
 		printResult(values, result);
-		
+
+		Log.p("Hughes Hartoggs..");
+		result = HughesHartoggs.process(values, powerBudget, targetBitRate);
+		printResult(values, result);
+
 		Log.p("Chow Cioffi Bingham..");
-		result = ChowCioffiBingham.process(values, budget);
-		
+		result = ChowCioffiBingham.process(values, powerBudget);
 		printResult(values, result);
 	}
 	
