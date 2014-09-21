@@ -13,10 +13,11 @@ public class ChowCioffiBingham {
 	 * Process.
 	 *
 	 * @param noiseLevels the noise levels
-	 * @param totalPower the total power
+	 * @param powerBudget the power budget
+	 * @param totalBitRate the total bit rate
 	 * @return the array list
 	 */
-	public static ArrayList<Double> process(ArrayList<Double> noiseLevels, double totalPower) {
+	public static ArrayList<Double> process(ArrayList<Double> noiseLevels, double powerBudget, int totalBitRate) {
 		
 		ArrayList<Double> result = new ArrayList<Double>();
 		
@@ -25,7 +26,7 @@ public class ChowCioffiBingham {
 		
 		// Distribute power equally over all subcarriers and compute SNR values based on this power
 		double[] snr = new double[n];
-		double power = totalPower/n;
+		double power = powerBudget/n;
 		for (int i=0; i<n; i++) {
 			snr[i] = power/noiseLevels.get(i);
 		}
@@ -112,7 +113,7 @@ public class ChowCioffiBingham {
 		}
 		
 		for (int i=0; i<n; i++) {
-			double r = b2[i] * totalPower / bitsTotal;
+			double r = b2[i] * powerBudget / bitsTotal;
 			result.add(i, r);
 		}
 

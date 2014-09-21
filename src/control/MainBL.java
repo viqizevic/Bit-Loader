@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import view.Log;
 import model.ChowCioffiBingham;
+import model.Converter;
 import model.HughesHartoggs;
 import model.WaterFilling;
 
@@ -19,53 +20,55 @@ public class MainBL {
 	 */
 	public static void main(String[] args) {
 		
-		ArrayList<Double> values = new ArrayList<Double>();
-		values.add(1/19.94);
-		values.add(1/17.03);
-		values.add(1/17.03);
-		values.add(1/10.0);
-		values.add(1/10.0);
-		values.add(1/2.968);
-		values.add(1/2.968);
-		values.add(1/0.0552);
+		ArrayList<Double> noiseLevels = new ArrayList<Double>();
+		noiseLevels.add(1/19.94);
+		noiseLevels.add(1/17.03);
+		noiseLevels.add(1/17.03);
+		noiseLevels.add(1/10.0);
+		noiseLevels.add(1/10.0);
+		noiseLevels.add(1/2.968);
+		noiseLevels.add(1/2.968);
+		noiseLevels.add(1/0.0552);
 		
 		double powerBudget = 8;
 		
 		int targetBitRate = 50;
 		
-		Log.p("Water filling..");
-		ArrayList<Double> result = WaterFilling.process(values, powerBudget);
-		printResult(values, result);
+		Log.p("Waterfilling..");
+		ArrayList<Double> result = WaterFilling.process(noiseLevels, powerBudget);
+		printResult(noiseLevels, result);
 
 		Log.p("Hughes Hartoggs..");
-		result = HughesHartoggs.process(values, powerBudget, targetBitRate);
-		printResult(values, result);
+		result = HughesHartoggs.process(noiseLevels, powerBudget, targetBitRate);
+		printResult(noiseLevels, result);
 
 		Log.p("Chow Cioffi Bingham..");
-		result = ChowCioffiBingham.process(values, powerBudget);
-		printResult(values, result);
+		result = ChowCioffiBingham.process(noiseLevels, powerBudget, targetBitRate);
+		printResult(noiseLevels, result);
 	}
 	
 	/**
 	 * Prints the result.
 	 *
-	 * @param values the values
-	 * @param result the result
+	 * @param noiseLevels the noise levels
+	 * @param powerLevels the power levels
 	 */
-	private static void printResult(ArrayList<Double> values, ArrayList<Double> result) {
+	private static void printResult(ArrayList<Double> noiseLevels, ArrayList<Double> powerLevels) {
 		String res = "";
-		double b = 0;
-		for (int i=0; i<result.size(); i++) {
-			double v = values.get(i);
-			double r = result.get(i);
-			double t = v + r;
-			res += String.format("%5.2f + %5.2f = %5.2f", v, r, t) + "\n";
-			b += r;
+		double budget = 0;
+		double rate = 0;
+		for (int i=0; i<powerLevels.size(); i++) {
+			double noise = noiseLevels.get(i);
+			double power = powerLevels.get(i);
+			double total = noise + power;
+			double bit = Math.max( ( Converter.getSNRInDb(power/noise) - 3 ) / 3, 0);
+			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
+			budget += power;
+			rate += bit;
 		}
-		if (b > 0) {
-			res += String.format("    B = %5.2f", b);
-			Log.p(res);
-		}
+		res += String.format("    B = %5.2f", budget) + "\n";
+		res += String.format("    R = %5.2f", rate);
+		Log.p(res);
 	}
 
 }

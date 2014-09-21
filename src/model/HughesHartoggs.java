@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import view.Log;
+
 /**
  * The Class HughesHartoggs.
  */
@@ -40,7 +42,7 @@ public class HughesHartoggs {
 			double minRequiredPower = Double.MAX_VALUE;
 			int minIndex = -1;
 			for (int i=0; i<n; i++) {
-				double snr = getSNRDependsOnBits(transportedBits[i]+1);
+				double snr = Converter.getSNR( getSNRDependsOnBits(transportedBits[i]+1) );
 				double currentRequiredPower = noise[i] * snr;
 				if (minRequiredPower > currentRequiredPower) {
 					minRequiredPower = currentRequiredPower;
@@ -49,7 +51,8 @@ public class HughesHartoggs {
 			}
 			
 			double oldUsedPower = power[minIndex];
-			double newUsedPower = noise[minIndex]*getSNRDependsOnBits(transportedBits[minIndex]+1);
+			double snr = Converter.getSNR( getSNRDependsOnBits(transportedBits[minIndex]+1) );
+			double newUsedPower = noise[minIndex]*snr;
 			powerBudgetLeft = powerBudgetLeft - newUsedPower + oldUsedPower;
 			if (powerBudgetLeft < 0) {
 				break;

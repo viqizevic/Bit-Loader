@@ -11,14 +11,14 @@ public class WaterFilling {
 	/**
 	 * Process.
 	 *
-	 * @param values the values
-	 * @param total the total
+	 * @param noiseLevels the noise levels
+	 * @param powerBudget the power budget
 	 * @return the array list
 	 */
-	public static ArrayList<Double> process(ArrayList<Double> values, double total) {
+	public static ArrayList<Double> process(ArrayList<Double> noiseLevels, double powerBudget) {
 		
 		ArrayList<Double> result = new ArrayList<Double>();
-		int n = values.size();
+		int n = noiseLevels.size();
 		
 		int decimals = 1000;
 		int m = 1000;
@@ -26,7 +26,7 @@ public class WaterFilling {
 		// create new array containing each value and it's index
 		int[] valuesAndIdx = new int[n];
 		for (int i=0; i<n; i++) {
-			valuesAndIdx[i] = (int) (Math.round(values.get(i)*decimals)*m + i);
+			valuesAndIdx[i] = (int) (Math.round(noiseLevels.get(i)*decimals)*m + i);
 			result.add(0.0);
 		}
 		
@@ -42,7 +42,7 @@ public class WaterFilling {
 		
 		// waterfilling
 		double[] sortedResult = new double[n]; 
-		double budget = total;
+		double budget = powerBudget;
 		int j = 1;
 		while (budget > 0 && j < n) {
 			double diff = sortedValues[j] - ( sortedValues[j-1] + sortedResult[j-1] );
