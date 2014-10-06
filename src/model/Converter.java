@@ -24,5 +24,15 @@ public class Converter {
 	public static double getValueInDb(double value) {
 		return 10 * Math.log10(value);
 	}
+	
+	/**
+	 * Log2.
+	 *
+	 * @param value the value
+	 * @return the double
+	 */
+	public static double log2(double value) {
+		return Math.log(value) / Math.log(2);
+	}
 
 }
