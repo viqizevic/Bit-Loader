@@ -60,11 +60,10 @@ public class MainBL {
 		Log.p("Hughes Hartoggs..");
 		result = HughesHartoggs.process(noiseLevels, powerBudget, targetBitRate);
 		printResult(noiseLevels, result);
-
+		*/
 		Log.p("Chow Cioffi Bingham..");
 		result = ChowCioffiBingham.process(noiseLevels, powerBudget, targetBitRate);
 		printResult(noiseLevels, result);
-		*/
 	}
 	
 	/**

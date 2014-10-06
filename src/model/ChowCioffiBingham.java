@@ -28,18 +28,19 @@ public class ChowCioffiBingham {
 		double[] snr = new double[n];
 		for (int i=0; i<n; i++) {
 			// power := total power / number of subcarriers
-			snr[i] = (powerBudget/n)/noiseLevels.get(i);
+			double power = powerBudget / n;
+			snr[i] = power / noiseLevels.get(i);
 		}
 		
 		// The SNR gap as the well known gap approximation
-		double gamma = Converter.getValue(9.8);
+		double gammaInDb = 9.8;
 		// Set current system performance margin gammaMargin as 0 dB
-		double gammaMargin = Converter.getValue(0);
+		double gammaMarginInDb = 0;
 		
 		int iterateCount = 0;
 		int maxCount = 10;
 		
-		int usedCarriers;
+		int usedCarriers = n;
 		
 		int bitsTotal = 0;
 		
@@ -51,10 +52,11 @@ public class ChowCioffiBingham {
 		double[] diff = new double[n];
 
 		while (bitsTotal < bitsTarget && iterateCount < maxCount) {
+			Log.p("" + gammaMarginInDb);
 			usedCarriers = n;
 			
 			for (int i=0; i<n; i++) {
-				b[i] = Math.log( 1 + snr[i]/(gamma+gammaMargin) )/Math.log(2);
+				b[i] = Math.log( 1 + snr[i]/(Converter.getValue(gammaInDb+gammaMarginInDb)) )/Math.log(2);
 				b2[i] = (int) Math.floor(b[i]);
 				diff[i] = b[i] - b2[i];
 				if (b2[i] == 0) {
@@ -73,7 +75,7 @@ public class ChowCioffiBingham {
 			}
 			
 			// Compute new gammaMargin
-			gammaMargin = gammaMargin + Converter.getValueInDb(Math.pow(2, (bitsTotal-bitsTarget)/usedCarriers));
+			gammaMarginInDb = gammaMarginInDb + Converter.getValueInDb(Math.pow(2, (bitsTotal-bitsTarget+0.0)/usedCarriers));
 			
 			iterateCount = iterateCount + 1;
 		}
@@ -109,8 +111,8 @@ public class ChowCioffiBingham {
 		}
 		
 		for (int i=0; i<n; i++) {
-			double snrValue = HughesHartoggs.getSNRDependsOnBits(b2[i]);
-			result.add(noiseLevels.get(i) * Converter.getValue(snrValue));
+			double snrValue = (Math.pow(2, 2*b2[i]) - 1) * Converter.getValue(gammaInDb + gammaMarginInDb);
+			result.add(noiseLevels.get(i) * snrValue);
 		}
 
 		return result;
