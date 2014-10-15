@@ -52,11 +52,12 @@ public class ChowCioffiBingham {
 		double[] diff = new double[n];
 
 		while (bitsTotal < bitsTarget && iterateCount < maxCount) {
-			Log.p("" + gammaMarginInDb);
+			Log.p("" + (gammaInDb + gammaMarginInDb));
 			usedCarriers = n;
 			
 			for (int i=0; i<n; i++) {
 				b[i] = Math.log( 1 + snr[i]/(Converter.getValue(gammaInDb+gammaMarginInDb)) )/Math.log(2);
+				Log.p("" + b[i]);
 				b2[i] = (int) Math.floor(b[i]);
 				diff[i] = b[i] - b2[i];
 				if (b2[i] == 0) {

@@ -63,7 +63,7 @@ public class MainBL {
 		*/
 		Log.p("Chow Cioffi Bingham..");
 		result = ChowCioffiBingham.process(noiseLevels, powerBudget, targetBitRate);
-		printResult(noiseLevels, result);
+		printResult2(snrLevels, 6.7897, result);
 	}
 	
 	/**
