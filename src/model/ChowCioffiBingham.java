@@ -57,7 +57,6 @@ public class ChowCioffiBingham {
 			
 			for (int i=0; i<n; i++) {
 				b[i] = Math.log( 1 + snr[i]/(Converter.getValue(gammaInDb+gammaMarginInDb)) )/Math.log(2);
-				Log.p("" + b[i]);
 				b2[i] = (int) Math.floor(b[i]);
 				diff[i] = b[i] - b2[i];
 				if (b2[i] == 0) {
@@ -80,6 +79,7 @@ public class ChowCioffiBingham {
 			
 			iterateCount = iterateCount + 1;
 		}
+		
 		
 		// Subtract one bit at a time
 		while (bitsTotal > bitsTarget) {
