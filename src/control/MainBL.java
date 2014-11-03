@@ -23,19 +23,22 @@ public class MainBL {
 	public static void main(String[] args) {
 		
 		double maxValue = 20;
-//		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(100, maxValue);
-		ArrayList<Double> snrLevels = TestInstance.getSmallSnrLevelsExample();
+//		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(5000, maxValue);
+		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(100, maxValue);
+//		ArrayList<Double> snrLevels = TestInstance.getSmallSnrLevelsExample();
 
 		ArrayList<Double> noiseLevels = new ArrayList<Double>();
 		for (Double snr : snrLevels) {
 			noiseLevels.add(1.0/snr);
 		}
 		
-//		double powerBudget = 50;
-		double powerBudget = 8;
+//		double powerBudget = 10000;
+		double powerBudget = 50;
+//		double powerBudget = 8;
 		
-//		int targetBitRate = 40;
-		int targetBitRate = 8;
+//		int targetBitRate = 10000;
+		int targetBitRate = 40;
+//		int targetBitRate = 8;
 		
 		Log.p("Waterfilling");
 		long time = System.currentTimeMillis();
