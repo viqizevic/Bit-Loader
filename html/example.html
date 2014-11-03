@@ -1,0 +1,28 @@
+<html lang="en">
+	<head>
+        <meta charset="utf-8">
+        <title>g·Raphaël Static Bar Charts</title>
+        <link rel="stylesheet" href="src/style.css" media="screen">
+        <script src="src/raphael.js"></script>
+        <script src="src/g.raphael.js"></script>
+        <script src="src/g.bar.js"></script>
+        <script>
+            window.onload = function () {
+                var r = Raphael("holder"),
+                    data = [[55, 20, 13, 32, 5, 1, 2, 10], [10, 2, 1, 5, 32, 13, 20,2]],
+                    txtattr = { font: "18px sans-serif" };
+                
+                r.text(320, 15, "").attr(txtattr);
+                
+                r.barchart(10, 10, 620, 530, data, {stacked: true});
+            };
+        </script>
+    	<style>.pkt_added {text-decoration:none !important;}</style>
+    </head>
+    <body class="raphael" id="g.raphael.dmitry.baranovskiy.com">
+        <div id="holder"></div>
+        <p>
+            Powered by <a href="http://g.raphaeljs.com/">gRaphaël</a>.
+        </p>
+    </body>
+</html>

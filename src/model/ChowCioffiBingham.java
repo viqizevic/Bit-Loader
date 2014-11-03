@@ -8,6 +8,9 @@ import view.Log;
  * The Class ChowCioffiBingham.
  */
 public class ChowCioffiBingham {
+	
+	/** The gamma in db_. */
+	private static double gammaInDb_;
 
 	/**
 	 * Process.
@@ -52,7 +55,6 @@ public class ChowCioffiBingham {
 		double[] diff = new double[n];
 
 		while (bitsTotal < bitsTarget && iterateCount < maxCount) {
-			Log.p("" + (gammaInDb + gammaMarginInDb));
 			usedCarriers = n;
 			
 			for (int i=0; i<n; i++) {
@@ -115,8 +117,19 @@ public class ChowCioffiBingham {
 			double snrValue = (Math.pow(2, 2*b2[i]) - 1) * Converter.getValue(gammaInDb + gammaMarginInDb);
 			result.add(noiseLevels.get(i) * snrValue);
 		}
+		
+		gammaInDb_ = gammaInDb + gammaMarginInDb;
 
 		return result;
+	}
+
+	/**
+	 * Gets the gamma in db.
+	 *
+	 * @return the gamma in db
+	 */
+	public static double getGammaInDb() {
+		return gammaInDb_;
 	}
 	
 	
