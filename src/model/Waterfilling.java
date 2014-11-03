@@ -23,7 +23,7 @@ public class WaterFilling {
 		int n = noiseLevels.size();
 		
 		int decimals = 1000;
-		int m = 1000;
+		int m = (int) Math.round(Math.pow(10, (""+n).length()));
 		
 		// create new array containing each value and it's index
 		int[] valuesAndIdx = new int[n];
@@ -91,8 +91,8 @@ public class WaterFilling {
 		ArrayList<Double> result = new ArrayList<Double>();
 		int n = snrLevels.size();
 		
-		int decimals = 100000;
-		int m = 1000;
+		int decimals = 1000;
+		int m = (int) Math.round(Math.pow(10, (""+n).length()));
 		
 		// create new array containing each value and it's index
 		int[] snrValuesAndIdx = new int[n];
@@ -157,8 +157,8 @@ public class WaterFilling {
 		ArrayList<Double> result = new ArrayList<Double>();
 		int n = snrLevels.size();
 		
-		int decimals = 100000;
-		int m = 1000;
+		int decimals = 1000;
+		int m = (int) Math.round(Math.pow(10, (""+n).length()));
 		
 		// create new array containing each value and it's index
 		int[] snrValuesAndIdx = new int[n];

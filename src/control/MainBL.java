@@ -22,57 +22,65 @@ public class MainBL {
 	 */
 	public static void main(String[] args) {
 		
-		ArrayList<Double> noiseLevels = new ArrayList<Double>();
-		noiseLevels.add(1/19.94);
-		noiseLevels.add(1/17.03);
-		noiseLevels.add(1/17.03);
-		noiseLevels.add(1/10.0);
-		noiseLevels.add(1/10.0);
-		noiseLevels.add(1/2.968);
-		noiseLevels.add(1/2.968);
-		noiseLevels.add(1/0.552);
+		double maxValue = 20;
+//		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(100, maxValue);
+		ArrayList<Double> snrLevels = TestInstance.getSmallSnrLevelsExample();
 
+		ArrayList<Double> noiseLevels = new ArrayList<Double>();
+		for (Double snr : snrLevels) {
+			noiseLevels.add(1.0/snr);
+		}
+		
+//		double powerBudget = 50;
 		double powerBudget = 8;
 		
+//		int targetBitRate = 40;
 		int targetBitRate = 8;
 		
 		Log.p("Waterfilling");
+		long time = System.currentTimeMillis();
 		ArrayList<Double> powerLevels = WaterFilling.process(noiseLevels, powerBudget);
+		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResult(noiseLevels, powerLevels);
 		printHtmlChart("Waterfilling", noiseLevels, powerLevels);
+		Log.p("");
 
-		ArrayList<Double> snrLevels = new ArrayList<Double>();
-		snrLevels.add(19.94);
-		snrLevels.add(17.03);
-		snrLevels.add(17.03);
-		snrLevels.add(10.0);
-		snrLevels.add(10.0);
-		snrLevels.add(2.968);
-		snrLevels.add(2.968);
-		snrLevels.add(0.552);
-		
+		/*
 		Log.p("Waterfilling (Rate adaptive)");
 		double gamma = Converter.getValue(0.0);
+		time = System.currentTimeMillis();
 		powerLevels = WaterFilling.rateAdaptiveProcess(snrLevels, gamma, powerBudget);
+		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling (Rate adaptive)", noiseLevels, powerLevels);
-		
+		Log.p("");
+
 		Log.p("Waterfilling (Margin adaptive)");
 		gamma = Converter.getValue(8.8);
+		time = System.currentTimeMillis();
 		powerLevels = WaterFilling.marginAdaptiveProcess(snrLevels, gamma, targetBitRate);
+		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling (Margin adaptive)", noiseLevels, powerLevels);
+		Log.p("");
+		*/
 		
 		Log.p("Hughes Hartoggs");
+		time = System.currentTimeMillis();
 		powerLevels = HughesHartoggs.process(noiseLevels, powerBudget, targetBitRate);
+		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResult(noiseLevels, powerLevels);
 		printHtmlChart("Hughes Hartoggs", noiseLevels, powerLevels);
+		Log.p("");
 		
 		Log.p("Chow Cioffi Bingham");
+		time = System.currentTimeMillis();
 		powerLevels = ChowCioffiBingham.process(noiseLevels, powerBudget, targetBitRate);
 		printResultWithGamma(snrLevels, ChowCioffiBingham.getGammaInDb(), powerLevels);
-		Log.p("Gamma: " + ChowCioffiBingham.getGammaInDb());
+		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
+		Log.p(String.format("Gamma: %.4f", ChowCioffiBingham.getGammaInDb()));
 		printHtmlChart("Chow Cioffi Bingham", noiseLevels, powerLevels);
+		Log.p("");
 	}
 	
 	/**
@@ -90,12 +98,16 @@ public class MainBL {
 			double power = powerLevels.get(i);
 			double total = noise + power;
 			double bit = Math.max( ( Converter.getValueInDb(power/noise) - 3 ) / 3, 0);
-			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 			budget += power;
 			rate += bit;
+			if (powerLevels.size() > 10) {
+				continue;
+			}
+			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 		}
 		res += String.format("    B = %5.2f", budget) + "\n";
-		res += String.format("    R = %5.2f", rate);
+		res += String.format("    R = %5.2f", rate) + "\n";
+		res += String.format("  R/B = %5.2f", rate/budget);
 		Log.p(res);
 	}
 
@@ -115,9 +127,12 @@ public class MainBL {
 			double power = powerLevels.get(i);
 			double total = noise + power;
 			double bit = 0.5 * Converter.log2(1 + power * snrLevels.get(i) / gamma);
-			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 			budget += power;
 			rate += bit;
+			if (powerLevels.size() > 10) {
+				continue;
+			}
+			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 		}
 		res += String.format("    B = %5.2f", budget) + "\n";
 		res += String.format("    R = %5.2f", rate) + "\n";
@@ -133,6 +148,12 @@ public class MainBL {
 	 * @param powerLevels the power levels
 	 */
 	private static void printHtmlChart(String title, ArrayList<Double> noiseLevels, ArrayList<Double> powerLevels) {
+		if (powerLevels.size() == 0) {
+			return;
+		}
+		if (powerLevels.size() > 200) {
+			return;
+		}
 		String data1 = "[";
 		String data2 = "[";
 		for (int i=0; i<powerLevels.size(); i++) {
