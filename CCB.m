@@ -1,3 +1,6 @@
+% Vicky Tanzil
+% vicky.tanzil@gmail.com
+% 04.11.2014
 %
 % Chow Cioffi Bingham’s Method
 %

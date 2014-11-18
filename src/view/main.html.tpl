@@ -10,11 +10,17 @@
             window.onload = function () {
                 var r = Raphael("holder"),
                     data = [<VAR:data1>, <VAR:data2>],
+                    fin = function() {
+                    	this.flag = r.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+                    },
+                    fout = function() {
+                    	this.flag.animate({opacity:0}, 300, function() {this.remove();});
+                    },
                     txtattr = { font: "18px sans-serif" };
                 
                 r.text(320, 15, "<VAR:title>").attr(txtattr);
                 
-                r.barchart(10, 10, 620, 530, data, {stacked: true});
+                r.barchart(10, 10, 620, 530, data, {stacked: true}).hover(fin, fout);
             };
         </script>
     	<style>.pkt_added {text-decoration:none !important;}</style>
