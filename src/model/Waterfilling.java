@@ -3,8 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import view.Log;
-
 /**
  * The Class WaterFilling.
  */

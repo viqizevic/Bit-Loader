@@ -106,7 +106,7 @@ public class MainBL {
 			if (powerLevels.size() > 10) {
 				continue;
 			}
-			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
+			res += String.format("%5.2f + %5.4f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 		}
 		res += String.format("    B = %5.2f", budget) + "\n";
 		res += String.format("    R = %5.2f", rate) + "\n";
@@ -135,7 +135,7 @@ public class MainBL {
 			if (powerLevels.size() > 10) {
 				continue;
 			}
-			res += String.format("%5.2f + %5.2f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
+			res += String.format("%5.2f + %5.4f = %5.2f (%5.2f)", noise, power, total, bit) + "\n";
 		}
 		res += String.format("    B = %5.2f", budget) + "\n";
 		res += String.format("    R = %5.2f", rate) + "\n";
