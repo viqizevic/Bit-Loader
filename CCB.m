@@ -1,17 +1,26 @@
-% Vicky Tanzil
-% vicky.tanzil@gmail.com
-% 04.11.2014
+% Author: Vicky Tanzil (vicky.tanzil@gmail.com)
+% Created: 04.11.2014
+%
+% Function: [gn,En,bn,margin] = CCB(nlev,pBudget,totBR)
 %
 % Chow Cioffi Bingham’s Method
+% as described in the lecture of Dr. Volker Jungnickel at TU Berlin
+% based on the paper
+% A Practical Discrete Multitone Transceiver Loading Algorithm
+% for Data Transmission over Spectrally Shaped Channels
+% by Peter S. Chow, John M. Cioffi, and John A.C. Bingham
+% IEEE Transactions on communications, Vol. 43, 1995
 %
-% nlev is a vector containing the noise levels
-% pBudget is the available power budget
-% totBR is the total bit rate we try to achieve
+% Input:
+% _ nlev is a vector containing the noise levels
+% _ pBudget is the available power budget
+% _ totBR is the total bit rate we try to achieve
 %
-% gn is channel gain
-% En is the energy in the n-th sub-channel (PAM or QAM)
-% bn is the bit in the n-th sub-channel
-% margin is the margin
+% Output:
+% _ gn is channel gain
+% _ En is the energy in the n-th sub-channel (PAM or QAM)
+% _ bn is the bit in the n-th sub-channel
+% _ margin is the margin used at the end
 %
 function [gn,En,bn,margin] = CCB(nlev,pBudget,totBR)
 

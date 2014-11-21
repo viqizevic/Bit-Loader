@@ -1,13 +1,17 @@
-% Vicky Tanzil
-% vicky.tanzil@gmail.com
-% 18.11.2014
+% Author: Vicky Tanzil (vicky.tanzil@gmail.com)
+% Created: 18.11.2014
 %
-% Waterfilling’s Method
+% Function: En = WF(nlev,pBudget)
 %
-% nlev is a vector containing the noise levels
-% pBudget is the available power budget
+% Water filling method
+% as described in the lecture of Dr. Volker Jungnickel at TU Berlin
 %
-% En is the energy in the n-th sub-channel
+% Input:
+% _ nlev is a vector containing the noise levels
+% _ pBudget is the available power budget
+%
+% Output:
+% _ En is the energy in the n-th sub-channel
 %
 function En = WF(nlev,pBudget)
 
@@ -21,7 +25,7 @@ n = length(nlev);
 SEn = zeros(n,1); % sorted En
 budget = pBudget;
 
-% Start by examining the k-th channel
+% Start by examining the second channel
 k = 2;
 while (budget > 0 && k <= n)
   % Compute level difference between k-th channel and the channel before
@@ -31,7 +35,7 @@ while (budget > 0 && k <= n)
     SEn(1:k-1) = SEn(1:k-1) + diff;
     budget = budget - diff*(k-1);
   else
-    % Otherwise, share with remaining budget to all channels before
+    % Otherwise, share remaining budget to all channels before
     rest = budget/(k-1);
     SEn(1:k-1) = SEn(1:k-1) + rest;
     budget = budget - rest*(k-1);
