@@ -1,9 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import view.Log;
 
 /**
  * The Class HughesHartoggs.
@@ -53,10 +50,10 @@ public class HughesHartoggs {
 			double oldUsedPower = power[minIndex];
 			double snr = Converter.getValue( getSNRDependsOnBits(transportedBits[minIndex]+1) );
 			double newUsedPower = noise[minIndex]*snr;
-			powerBudgetLeft = powerBudgetLeft - newUsedPower + oldUsedPower;
-			if (powerBudgetLeft < 0) {
+			if (powerBudgetLeft - newUsedPower + oldUsedPower < 0) {
 				break;
 			}
+			powerBudgetLeft = powerBudgetLeft - newUsedPower + oldUsedPower;
 			
 			transportedBits[minIndex] = transportedBits[minIndex] + 1; 
 			totalTransportedBits++;

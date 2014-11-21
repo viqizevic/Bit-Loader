@@ -22,7 +22,7 @@ public class MainBL {
 	 */
 	public static void main(String[] args) {
 		
-		double maxValue = 20;
+//		double maxValue = 20;
 //		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(5000, maxValue);
 //		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(100, maxValue);
 		ArrayList<Double> snrLevels = TestInstance.getSmallSnrLevelsExample();
