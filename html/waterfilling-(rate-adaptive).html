@@ -10,11 +10,17 @@
             window.onload = function () {
                 var r = Raphael("holder"),
                     data = [[0.050, 0.059, 0.059, 0.100, 0.100, 0.337, 0.337, 1.812], [1.241, 1.233, 1.233, 1.192, 1.192, 0.955, 0.955, 0.000]],
+                    fin = function() {
+                    	this.flag = r.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+                    },
+                    fout = function() {
+                    	this.flag.animate({opacity:0}, 300, function() {this.remove();});
+                    },
                     txtattr = { font: "18px sans-serif" };
                 
                 r.text(320, 15, "Waterfilling (Rate adaptive)").attr(txtattr);
                 
-                r.barchart(10, 10, 620, 530, data, {stacked: true});
+                r.barchart(10, 10, 620, 530, data, {stacked: true}).hover(fin, fout);
             };
         </script>
     	<style>.pkt_added {text-decoration:none !important;}</style>

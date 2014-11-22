@@ -39,18 +39,17 @@ public class MainBL {
 //		int targetBitRate = 10000;
 //		int targetBitRate = 40;
 		int targetBitRate = 8;
+		double gamma = Converter.getValue(0.0);
 		
 		Log.p("Waterfilling");
 		long time = System.currentTimeMillis();
 		ArrayList<Double> powerLevels = WaterFilling.process(noiseLevels, powerBudget);
 		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
-		printResult(noiseLevels, powerLevels);
+		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling", noiseLevels, powerLevels);
 		Log.p("");
 
-		/*
 		Log.p("Waterfilling (Rate adaptive)");
-		double gamma = Converter.getValue(0.0);
 		time = System.currentTimeMillis();
 		powerLevels = WaterFilling.rateAdaptiveProcess(snrLevels, gamma, powerBudget);
 		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
@@ -66,13 +65,12 @@ public class MainBL {
 		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling (Margin adaptive)", noiseLevels, powerLevels);
 		Log.p("");
-		*/
 		
 		Log.p("Hughes Hartoggs");
 		time = System.currentTimeMillis();
 		powerLevels = HughesHartoggs.process(noiseLevels, powerBudget, targetBitRate);
 		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
-		printResult(noiseLevels, powerLevels);
+		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Hughes Hartoggs", noiseLevels, powerLevels);
 		Log.p("");
 		
