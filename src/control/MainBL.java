@@ -44,7 +44,7 @@ public class MainBL {
 		Log.p("Waterfilling");
 		long time = System.currentTimeMillis();
 		ArrayList<Double> powerLevels = WaterFilling.process(noiseLevels, powerBudget);
-		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
+		Log.p(String.format("Elapsed time: %.3f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling", noiseLevels, powerLevels);
 		Log.p("");
@@ -52,7 +52,7 @@ public class MainBL {
 		Log.p("Waterfilling (Rate adaptive)");
 		time = System.currentTimeMillis();
 		powerLevels = WaterFilling.rateAdaptiveProcess(snrLevels, gamma, powerBudget);
-		Log.p(String.format("Elapsed time: %.2f (ms)", (System.currentTimeMillis()-time)/1000.0));
+		Log.p(String.format("Elapsed time: %.3f (ms)", (System.currentTimeMillis()-time)/1000.0));
 		printResultWithGamma(snrLevels, gamma, powerLevels);
 		printHtmlChart("Waterfilling (Rate adaptive)", noiseLevels, powerLevels);
 		Log.p("");

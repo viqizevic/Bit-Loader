@@ -63,4 +63,3 @@ end
 function snr = LTSItable(bits)
   snr = 3*bits + 3;
 end
-

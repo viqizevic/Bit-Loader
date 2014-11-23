@@ -5,7 +5,8 @@
 %
 % Cioffi’s rate adaptive Water filling Method
 % 
-% as described in the script of John M. Cioffi on his homepage.
+% as described in the script of John M. Cioffi
+% (downloadable on his homepage).
 %
 % Input:
 % _ snrlev is a vector containing the snr levels
@@ -24,13 +25,14 @@ n = length(snrlev);
 % Get sorted values and sorting indices
 [ssnrlev,issnrlev] = sort(snrlev, 'descend');
 
+% Initializations
 i = n;
-% Compute WF constant
 K2 = pBudget + sum(gamma./ssnrlev);
 
 negMinEn = true; % if lowest energy is negative
 
 while (negMinEn)
+  % Compute WF constant
   K = K2/i;
   % Check lowest energy
   minEn = K - gamma/ssnrlev(i);
@@ -51,6 +53,4 @@ En(issnrlev) = SEn;
 
 bn = 0.5 * log2( 1 + En.*snrlev);
 
-
-
-
+end
