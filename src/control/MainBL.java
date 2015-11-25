@@ -2,6 +2,7 @@ package control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import view.Log;
 import view.Template;
@@ -20,25 +21,26 @@ public class MainBL {
 	 *
 	 * @param args the arguments
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
-//		double maxValue = 20;
-//		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(5000, maxValue);
-//		ArrayList<Double> snrLevels = TestInstance.getRandomSnrLevelsExample(100, maxValue);
-		ArrayList<Double> snrLevels = TestInstance.getSmallSnrLevelsExample();
+		ArrayList<Double> snrLevels_8 = TestInstance.getSmallSnrLevelsExample();
+		double maxValue = 20;
+		ArrayList<Double> snrLevels_100 = TestInstance.getRandomSnrLevelsExample(100, maxValue);
+		ArrayList<Double> snrLevels_5000 = TestInstance.getRandomSnrLevelsExample(5000, maxValue);
+		
+		test(snrLevels_8, 8, 8);
+//		test(snrLevels_100, 50, 40);
+//		test(snrLevels_5000, 10000, 10000);
+	}
+		
+	
+	public static void test(ArrayList<Double> snrLevels, double powerBudget, int targetBitRate) {
 
 		ArrayList<Double> noiseLevels = new ArrayList<Double>();
 		for (Double snr : snrLevels) {
 			noiseLevels.add(1.0/snr);
 		}
-		
-//		double powerBudget = 10000;
-//		double powerBudget = 50;
-		double powerBudget = 8;
-		
-//		int targetBitRate = 10000;
-//		int targetBitRate = 40;
-		int targetBitRate = 8;
 		double gamma = Converter.getValue(0.0);
 		
 		Log.p("Waterfilling");
@@ -90,6 +92,7 @@ public class MainBL {
 	 * @param noiseLevels the noise levels
 	 * @param powerLevels the power levels
 	 */
+	@SuppressWarnings("unused")
 	private static void printResult(ArrayList<Double> noiseLevels, ArrayList<Double> powerLevels) {
 		String res = "";
 		double budget = 0;
@@ -155,6 +158,7 @@ public class MainBL {
 		if (powerLevels.size() > 200) {
 			return;
 		}
+		Locale.setDefault(Locale.ENGLISH);
 		String data1 = "[";
 		String data2 = "[";
 		for (int i=0; i<powerLevels.size(); i++) {
