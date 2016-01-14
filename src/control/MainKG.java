@@ -3,6 +3,7 @@ package control;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import model.data.Data;
 import view.Log;
 import view.XYSeriesChart;
 
@@ -13,12 +14,17 @@ public class MainKG {
 		Log.p("Krongold");
 		ArrayList<Double> snrLevels_8 = TestInstance.getSmallSnrLevelsExample();
 		double maxValue = 20;
-		ArrayList<Double> snrLevels_100 = TestInstance.getRandomConnectedSnrLevelsExample(100, maxValue, 1);
+//		ArrayList<Double> snrLevels_100 = TestInstance.getRandomConnectedSnrLevelsExample(100, maxValue, 1);
+		
+		ArrayList<Double> snrLevels = new ArrayList<Double>();
+		for (double d : Data.getSnrPerChannel()) {
+			snrLevels.add(d);
+		}
 		
 		Vector<Double> x = new Vector<Double>();
 		Vector<Double> y = new Vector<Double>();
 		int i = 1;
-		for (Double d : snrLevels_100) {
+		for (Double d : snrLevels) {
 			x.add(i+0.0);
 			y.add(d);
 			i++;

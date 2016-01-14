@@ -8,6 +8,7 @@ import view.Log;
 
 public class Test {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		ArrayList<Double> snrLevels_8 = TestInstance.getSmallSnrLevelsExample();
@@ -20,6 +21,7 @@ public class Test {
 //		test(snrLevels_5000, 10000, 10000);
 	}
 
+	@SuppressWarnings("unused")
 	public static void test(ArrayList<Double> snrLevels, double powerBudget, int targetBitRate) {
 
 		ArrayList<Double> noiseLevels = new ArrayList<Double>();

@@ -27,6 +27,7 @@ public class CCB {
 		}
 		
 		// The SNR gap as the well known gap approximation
+		@SuppressWarnings("unused")
 		double gammaInDb = 9.8;
 		// Set current system performance margin gammaMargin as 0 dB
 		double gammaMarginInDb = 0;
