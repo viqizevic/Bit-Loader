@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Data {
 	
-	public static HashMap<Integer, Double> snrOverRateFor1EMinus2Ber() {
+	public static HashMap<Integer, Double> getSnrOfModulationRateFor1EMinus2Ber() {
 		HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
 		
 		hm.put(1, 0.13529736077635854);
@@ -22,7 +22,7 @@ public class Data {
 		return hm;
 	}
 	
-	public static double[] getSnrPerChannel() {
+	public static double[] getSnrPerChannelInDb() {
 		double[] snr = {
 				18.426404637914111,
 				18.422915928228448,

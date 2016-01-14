@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Collection;
 import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
@@ -11,14 +12,20 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
+/**
+ * The Class XYSeriesChart.
+ */
 public class XYSeriesChart extends ApplicationFrame {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 504794682564910475L;
 
 	/**
-	 * A demonstration application showing an XY series containing a null value.
+	 * Instantiates a new XY series chart.
 	 *
-	 * @param title  the frame title.
+	 * @param x the x
+	 * @param y the y
+	 * @param title the title
 	 */
 	public XYSeriesChart(Vector<Double> x, Vector<Double> y, String title) {
 		
@@ -45,9 +52,11 @@ public class XYSeriesChart extends ApplicationFrame {
 	}
 	
 	/**
-	 * Starting point for the demonstration application.
+	 * Display.
 	 *
-	 * @param args  ignored.
+	 * @param x the x
+	 * @param y the y
+	 * @param title the title
 	 */
 	public static void display(Vector<Double> x, Vector<Double> y, String title) {
 		
@@ -58,4 +67,22 @@ public class XYSeriesChart extends ApplicationFrame {
 		
 	}
 
+	/**
+	 * Plot.
+	 *
+	 * @param series the series
+	 * @param title the title
+	 */
+	public static void plot(Collection<Double> series, String title) {
+		Vector<Double> x = new Vector<Double>();
+		Vector<Double> y = new Vector<Double>();
+		int i = 1;
+		for (Double d : series) {
+			x.add(i+0.0);
+			y.add(d);
+			i++;
+		}
+		XYSeriesChart.display(x, y, title);
+	}
+	
 }

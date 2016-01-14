@@ -11,7 +11,7 @@ public class CCB {
 	public static ArrayList<Double> process(ArrayList<Double> noiseLevels, double powerBudget, int totalBitRate) {
 		ArrayList<Double> result = new ArrayList<Double>();
 		
-		HashMap<Integer, Double> snrOverRateFor1EMinus2Ber = Data.snrOverRateFor1EMinus2Ber();
+		HashMap<Integer, Double> snrOverRateFor1EMinus2Ber = Data.getSnrOfModulationRateFor1EMinus2Ber();
 		
 		// The maximum number of usable carriers
 		int n = noiseLevels.size();
