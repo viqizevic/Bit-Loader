@@ -40,4 +40,25 @@ public class TestInstance {
 		}
 		return snrLevels;
 	}
+
+	/**
+	 * Gets the random connected snr levels example.
+	 *
+	 * @param size the size
+	 * @param maxValue the max value
+	 * @param maxVariation the max variation
+	 * @return the random connected snr levels example
+	 */
+	public static ArrayList<Double> getRandomConnectedSnrLevelsExample(int size, double maxValue, double maxVariation) {
+		ArrayList<Double> snrLevels = new ArrayList<Double>();
+		double prevValue = Math.random() * maxValue;
+		for (int i=0; i<size; i++) {
+			double snrVariation = (Math.random() - Math.random()) * maxVariation;
+			double snr = prevValue + snrVariation;
+			snr = Math.max(0, Math.min(snr, maxValue));
+			snrLevels.add(snr);
+			prevValue = snr;
+		}
+		return snrLevels;
+	}
 }

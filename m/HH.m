@@ -12,7 +12,7 @@
 % _ totBR is the total bit rate we try to achieve
 %
 % Output:
-% _ En is the energy in the n-th sub-channel (PAM or QAM)
+% _ En is the energy in the n-th sub-channel
 % _ bn is the bit in the n-th sub-channel
 %
 function [En, bn] = HH(nlev,pBudget,totBR)

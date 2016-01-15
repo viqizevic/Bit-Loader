@@ -18,7 +18,7 @@
 %
 % Output:
 % _ gn is channel gain
-% _ En is the energy in the n-th sub-channel (PAM or QAM)
+% _ En is the energy in the n-th sub-channel
 % _ bn is the bit in the n-th sub-channel
 % _ margin is the margin used at the end
 %
