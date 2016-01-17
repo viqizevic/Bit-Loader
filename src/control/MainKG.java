@@ -2,6 +2,7 @@ package control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 import model.Converter;
 import model.data.Data;
@@ -41,9 +42,35 @@ public class MainKG {
 			noiseLevels.add(powerBudget * oldPowerLevels.get(i)/snr);
 		}
 		
+		Vector<Integer> mods = Data.getAvaliableModulationRates();
 		HashMap<Integer, Double> snrOfModRate = Data.getSnrOfModulationRateFor1EMinus2Ber();
+		Vector<Double> x = new Vector<Double>();
+		Vector<Double> snrValues = new Vector<Double>();
+		x.add(0.0);
+		snrValues.add(0.0);
+		for (int i : mods) {
+			x.add(i+0.0);
+			snrValues.add(snrOfModRate.get(i));
+		}
 		
-		XYSeriesChart.plot(snrOfModRate.values(), "SNR x ModRate");
+		double prevMod = 0;
+		double prevSnr = 0;
+		Vector<Double> betas = new Vector<Double>();
+		for (int currMod : mods) {
+			double currSnr = snrOfModRate.get(currMod);
+			Log.p(currMod + " >> " + currSnr);
+			double beta = (currSnr - prevSnr) / (currMod - prevMod);
+			betas.add(beta);
+			Log.p("beta(" + currMod + ") = " + beta);
+			prevMod = currMod;
+			prevSnr = currSnr;
+		}
+		
+//		XYSeriesChart.display(x, snrValues, "ModRate x SNR");
+		
+		double lambda = 0.7;
+		Log.ps("lambda = %f ", lambda);
+		
 	}
 	
 }
