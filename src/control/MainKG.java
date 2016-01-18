@@ -41,6 +41,8 @@ public class MainKG {
 			double snr = Converter.getValue(snrLevelsInDb.get(i));
 			noiseLevels.add(powerBudget * oldPowerLevels.get(i)/snr);
 		}
+		XYSeriesChart.plot(snrLevelsInDb, "SNR");
+		XYSeriesChart.plot(noiseLevels, "Noise Levels");
 		
 		Vector<Integer> mods = Data.getAvaliableModulationRates();
 		HashMap<Integer, Double> snrOfModRate = Data.getSnrOfModulationRateFor1EMinus2Ber();
@@ -68,9 +70,28 @@ public class MainKG {
 		
 //		XYSeriesChart.display(x, snrValues, "ModRate x SNR");
 		
-		double lambda = 0.7;
-		Log.ps("lambda = %f ", lambda);
+		double lambda = 0;
 		
+		ArrayList<Double> rates = new ArrayList<Double>();
+		for (double nLvl : noiseLevels) {
+			int r = getRate(1/(lambda * nLvl), mods, betas);
+			rates.add(r+0.0);
+		}
+		XYSeriesChart.plot(rates, "Rate");
+	}
+	
+	private static int getRate(double lambda, Vector<Integer> mods, Vector<Double> betas) {
+		int rate = 0;
+		for (int currMod : mods) {
+			if (betas.get(currMod-1) - lambda > 0) {
+				rate = currMod-1;
+				break;
+			}
+		}
+		if (lambda > betas.lastElement()) {
+			rate = mods.lastElement();
+		}
+		return rate;
 	}
 	
 }

@@ -18,6 +18,7 @@ public class Data {
 	public static HashMap<Integer, Double> getSnrOfModulationRateFor1EMinus2Ber() {
 		HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
 		
+		hm.put(0, 0.0);
 		hm.put(1, 0.13529736077635854);
 		hm.put(2, 1.7059472155271709);
 		hm.put(3, 5.4118944310543409);
