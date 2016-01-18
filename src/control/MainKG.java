@@ -54,6 +54,7 @@ public class MainKG {
 			x.add(i+0.0);
 			snrValues.add(snrOfModRate.get(i));
 		}
+		XYSeriesChart.display(x, snrValues, "ModRate x SNR");
 		
 		double prevMod = 0;
 		double prevSnr = 0;
@@ -68,13 +69,20 @@ public class MainKG {
 			prevSnr = currSnr;
 		}
 		
-//		XYSeriesChart.display(x, snrValues, "ModRate x SNR");
+		double totalPowerLow = 0;
+		double totalBitLow = 0;
 		
-		double lambda = 0;
+		double totalPowerHigh = powerBudget;
+		double totalBitHigh = mods.lastElement();
+		
+		double minLambda = 0;
+		double maxLambda = 100;
+		
+		double lambda = 0.01;
 		
 		ArrayList<Double> rates = new ArrayList<Double>();
 		for (double nLvl : noiseLevels) {
-			int r = getRate(1/(lambda * nLvl), mods, betas);
+			int r = getRate(lambda/nLvl, mods, betas);
 			rates.add(r+0.0);
 		}
 		XYSeriesChart.plot(rates, "Rate");
