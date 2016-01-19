@@ -39,7 +39,7 @@ public class MainKG {
 		int size = snrLevelsInDb.size();
 		for (int i=0; i<size; i++) {
 			double snr = Converter.getValue(snrLevelsInDb.get(i));
-			noiseLevels.add(powerBudget * oldPowerLevels.get(i)/snr);
+			noiseLevels.add(oldPowerLevels.get(i)/snr);
 		}
 		XYSeriesChart.plot(snrLevelsInDb, "SNR");
 		XYSeriesChart.plot(noiseLevels, "Noise Levels");
@@ -72,20 +72,61 @@ public class MainKG {
 		double totalPowerLow = 0;
 		double totalBitLow = 0;
 		
-		double totalPowerHigh = powerBudget;
-		double totalBitHigh = mods.lastElement();
-		
-		double minLambda = 0;
-		double maxLambda = 100;
-		
-		double lambda = 0.01;
-		
-		ArrayList<Double> rates = new ArrayList<Double>();
-		for (double nLvl : noiseLevels) {
-			int r = getRate(lambda/nLvl, mods, betas);
-			rates.add(r+0.0);
+		int maxBitRate = mods.lastElement();
+		double totalBitHigh = maxBitRate * size;
+		double totalPowerHigh = 0.0;
+		for (int i=0; i<size; i++) {
+			totalPowerHigh += snrOfModRate.get(maxBitRate) * noiseLevels.get(i);
 		}
-		XYSeriesChart.plot(rates, "Rate");
+		
+		int counter = 1;
+		int maxIteration = 20;
+		ArrayList<Double> rates = new ArrayList<Double>();
+		ArrayList<Double> powers = new ArrayList<Double>();
+		double prevPower = -1;
+		double tol = 0.00000001;
+		while (totalPowerLow <= powerBudget && powerBudget <= totalPowerHigh) {
+			double lambda = (totalPowerHigh - totalPowerLow) / (totalBitHigh - totalBitLow);
+			Log.ps("Lambda = %f", lambda);
+			
+			double totalNewPower = 0.0;
+			int totalNewBitRate = 0;
+			rates = new ArrayList<Double>();
+			powers = new ArrayList<Double>();
+			for (double nLvl : noiseLevels) {
+				int r = getRate(lambda/nLvl, mods, betas);
+				double p = snrOfModRate.get(r) * nLvl;
+				powers.add(p);
+				totalNewPower += p;
+				totalNewBitRate += r;
+				rates.add(r+0.0);
+			}
+			XYSeriesChart.plot(rates, "Rate");
+			Log.ps("New total rate = %d", totalNewBitRate);
+			Log.ps("New total power = %f", totalNewPower);
+			
+			if (Math.abs(totalNewPower - totalPowerLow) < tol && Math.abs(totalNewPower - totalPowerHigh) < tol) {
+				break;
+			} else if (Math.abs(totalNewPower - powerBudget) < tol) {
+				break;
+			} else if (totalNewPower < powerBudget) {
+				totalPowerLow = totalNewPower;
+				totalBitLow = totalNewBitRate;
+			} else { // total new power > power budget
+				totalPowerHigh = totalNewPower;
+				totalBitHigh = totalNewBitRate;
+			}
+			
+			if (Math.abs(totalNewPower - prevPower) < tol) {
+				break;
+			}
+			prevPower = totalNewPower;
+			counter++;
+			if (counter > maxIteration) {
+				break;
+			}
+		}
+		
 	}
 	
 	private static int getRate(double lambda, Vector<Integer> mods, Vector<Double> betas) {
