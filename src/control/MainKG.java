@@ -101,20 +101,19 @@ public class MainKG {
 				totalNewBitRate += r;
 				rates.add(r+0.0);
 			}
-			XYSeriesChart.plot(rates, "Rate");
 			Log.ps("New total rate = %d", totalNewBitRate);
 			Log.ps("New total power = %f", totalNewPower);
 			
-			if (Math.abs(totalNewPower - totalPowerLow) < tol && Math.abs(totalNewPower - totalPowerHigh) < tol) {
+			if (Math.abs(totalNewPower - totalPowerLow) <= tol && Math.abs(totalNewPower - totalPowerHigh) <= tol) {
 				break;
 			} else if (Math.abs(totalNewPower - powerBudget) < tol) {
 				break;
-			} else if (totalNewPower < powerBudget) {
-				totalPowerLow = totalNewPower;
-				totalBitLow = totalNewBitRate;
-			} else { // total new power > power budget
+			} else if (totalNewPower > powerBudget) {
 				totalPowerHigh = totalNewPower;
 				totalBitHigh = totalNewBitRate;
+			} else { // total new power < power budget
+				totalPowerLow = totalNewPower;
+				totalBitLow = totalNewBitRate;
 			}
 			
 			if (Math.abs(totalNewPower - prevPower) < tol) {
@@ -127,13 +126,16 @@ public class MainKG {
 			}
 		}
 		
+		XYSeriesChart.plot(rates, "Rate");
+		XYSeriesChart.plot(powers, "Power");
+		
 	}
 	
 	private static int getRate(double lambda, Vector<Integer> mods, Vector<Double> betas) {
 		int rate = 0;
 		for (int currMod : mods) {
-			if (betas.get(currMod-1) - lambda > 0) {
-				rate = currMod-1;
+			if (betas.get(currMod-1) > lambda) {
+				rate = currMod-2;
 				break;
 			}
 		}
