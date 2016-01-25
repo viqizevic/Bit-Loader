@@ -106,7 +106,7 @@ public class MainKG {
 			
 			if (Math.abs(totalNewPower - totalPowerLow) <= tol && Math.abs(totalNewPower - totalPowerHigh) <= tol) {
 				break;
-			} else if (Math.abs(totalNewPower - powerBudget) < tol) {
+			} else if (Math.abs(totalNewPower - powerBudget) < tol && totalNewPower < powerBudget) {
 				break;
 			} else if (totalNewPower > powerBudget) {
 				totalPowerHigh = totalNewPower;
